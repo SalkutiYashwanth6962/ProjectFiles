@@ -1,0 +1,23 @@
+.grid-container{
+    display:grid;
+    grid-template-columns: repeat(4,100px);
+    grid-auto-rows: 150px;/* all rows will be set to 150px*/
+    grid-auto-rows: minmax(150px,auto);
+    grid-gap:20px ;
+    grid-template-areas: 
+    "header header"
+    "sidebar content"
+    /*
+    justify-content:cnter stretch;
+    align-items:center
+    */
+    
+}
+.grid-item-1{
+    grid-column:1/-1;
+    grid-area:header;
+    align-self: span 2;
+}
+.grid-item-2{
+    grid-row:span 2;
+}

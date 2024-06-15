@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>backbone js practice</title>
+    <style>
+      #orderNav ul li {
+        list-style-type: none;
+        cursor: pointer;
+      }
+      li:hover {
+        color: orangered;
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- allows to develop and structure client side applications that run in a web browser.
+         It offers MVC framework which abstracts data into models, DOM (Document Object Model) into views and bind these two using events. 
+    you represent your data as Models, which can be created, validated, destroyed, and saved to the server. 
+    
+    -->
+    <div id="demo"></div>
+    <div id="testing"></div>
+    <div id="demo1"></div>
+    <nav id="orderNav">
+      <ul>
+        <li data-url="firstOrder">First Order</li>
+        <li data-url="secondOrder">Second Order</li>
+      </ul>
+    </nav>
+
+    <script id="demoTemplate" type="text/html">
+      external example of the template
+    </script>
+    <script
+      src="https://code.jquery.com/jquery-2.1.3.min.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.2/underscore-min.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"
+      type="text/javascript"
+    ></script>
+    <!--
+
+    -to build dynamic web pages  
+    -to struture web pages
+    -it offers mvc 
+    -model(data)  collections(collection of models)  view(interface dom element controller)
+    -to build single page apps
+    -router 
+    -automatically updates when model changes
+    -jquery underscore js backbone js
+
+    -Model collection
+    -Model(load save data in/from server)
+    -manges data attributes
+    -js object contains different properities in the form of key value pairs
+    -{name:'value'}
+
+    Collection :
+    -it is a group of related models
+    -ex:players:[
+    {
+        name:'virat',
+        team:'india',
+        age:45
+    },
+    {
+        name:'sachin',
+        team:'india',
+        age:55
+    }
+    
+    ]
+
+    View:
+    -it is an atomic chunk of user interface 
+    -renders the data from a specific model or number of models
+
+-->
+
+    <!-- how to create model -->
+    <!-- <script src="model.js"></script> -->
+    <!-- <script src="modeloperations.js"></script> -->
+    <!-- <script src="modelValidation.js"></script> -->
+    <!-- <script src="modelInheritance.js"></script> -->
+    <!-- <script src="modeldataChangingEventModel.js"></script> -->
+    <!-- <script src="collection.js"></script> -->
+    <!-- <script src="view1.js"></script>
+<script src="passingData2.js"></script>
+<script src="CustomEvent.js"></script>
+<script src="EventHandlers4.js"></script>
+<script src="template5.js"></script>
+ -->
+    <!-- <script src="eventHandling.js"></script> -->
+    <!--external template -->
+    <script id="eventContainer" type="text/html">
+      <button id="btnEvent">Click Me.</button>
+    </script>
+    <script src="router.js"></script>
+    <script src="routerEx2.js"></script>
+    <script src="parameterizedrouting.js"></script>
+    <a href="#/second">second</a>
+    <a href="#/third/123/we">third link kohli</a>
+  </body>
+</html>
+<!--
+
+    
+-->

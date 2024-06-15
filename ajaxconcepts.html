@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .anime {
+        width: 150px;
+        height: 150px;
+        background-color: orangered;
+      }
+
+      .main_content1,
+      .main_content2,
+      .main_content3 {
+        opacity: 0;
+      }
+      .main_content1.animate__animated,
+      .main_content2.animate__animated,
+      .main_content3.animate__animated {
+        transition: 0.5s;
+        opacity: 1;
+      }
+    </style>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+  </head>
+  <body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.js"
+      integrity="sha512-ZKNVEa7gi0Dz4Rq9jXcySgcPiK+5f01CqW+ZoKLLKr9VMXuCsw3RjWiv8ZpIOa0hxO79np7Ec8DDWALM0bDOaQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <!-- jquery is a light weight js library for easy access dom elements and add action to it 
+    like mostly like write less do more 
+    shortcut way to js code 
+    -features:dom,style manipulation ,eventlisteners,ajax calls
+    -syntax==$(selector).action()
+    selectors:tag,class,id,attributes,attributes value
+    -->
+    <!-- <script src="script1.js"></script> -->
+
+    <div id="datarelated"></div>
+    <p>i m yashwanth</p>
+    <p class="second">some content</p>
+    <button id="btn">click me to fade content.. by using fadeTo()</button>
+    <div class="anime">
+      content with some animation effect click animate button to see some
+      changes
+    </div>
+    <button id="anime-btn">animate</button>
+    <p id="domrelated">example of dom related like text(),html(),val()</p>
+    <button id="dom-btn">click here to content</button>
+    <div id="ajax"></div>
+    <p>form related focus</p>
+    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Provident est
+    nostrum et non iure temporibus nisi, aperiam perspiciatis eveniet eos
+    tempora nobis corrupti, cumque assumenda inventore dolore quia beatae,
+    voluptate debitis architecto. Vel laudantium quo atque. Aliquid nostrum
+    accusantium vero necessitatibus illo ipsum possimus, deserunt officia cum
+    blanditiis quae neque, quisquam aut nesciunt eveniet quis in ad doloremque.
+    Doloremque officia voluptatibus nihil doloribus commodi possimus ea quidem
+    perferendis ex alias quam delectus eum corrupti blanditiis, voluptates
+    ratione dolorum hic corporis quis reiciendis repellat, esse accusamus,
+    impedit aspernatur. Corporis fugit, quidem minus consequuntur sapiente iste
+    fugiat culpa perferendis. Nam, repellendus ipsa? Lorem ipsum dolor sit amet
+    consectetur adipisicing elit. Qui tenetur laboriosam, aspernatur sed
+    assumenda, quo nam quod omnis consequatur itaque quia iusto suscipit rem
+    exercitationem placeat. Numquam, inventore perferendis repudiandae provident
+    nesciunt animi accusantium dolores! Totam tempore repudiandae quaerat
+    mollitia sequi sint maiores et architecto fuga. Cumque reprehenderit ipsam
+    neque nobis tenetur et harum, asperiores nisi culpa, quis iure, incidunt
+    voluptatum earum numquam maiores. Esse nemo consequatur a, aut quo minus
+    obcaecati accusantium reiciendis rem iure, aspernatur placeat excepturi
+    quidem voluptate quia! Sint architecto, illum veritatis mollitia provident
+    perspiciatis, maiores, iure numquam optio sapiente tempora nisi expedita
+    porro laudantium excepturi!
+    <br />
+    <center>
+      <h1 class="main_content3" style="font-size: 40px">Picktime</h1>
+    </center>
+    <div
+      style="
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        margin: 20px;
+      "
+    >
+      <img
+        class="main_content1"
+        src="https://www.picktime.com/webassets/2021/PTicons/picktime-default-cover.png"
+        alt=""
+        width="25%"
+        style="border-radius: 5%"
+      />
+
+      <h1 class="main_content2" style="width: 70%">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum
+        tempore perferendis dolore expedita explicabo quasi ipsa consequatur
+        exercitationem aspernatur aliquid tenetur possimus qui fugiat beatae
+        dignissimos, similique totam quo! Ad iusto autem doloribus numquam!.
+      </h1>
+      <!-- <img src="https://www.picktime.com/webassets/2021/PTicons/picktime-default-cover.png" alt="" width="40%" style="border-radius: 100%;"> -->
+    </div>
+
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum tempore
+    perferendis dolore expedita explicabo quasi ipsa consequatur exercitationem
+    aspernatur aliquid tenetur possimus qui fugiat beatae dignissimos, similique
+    totam quo! Ad iusto autem doloribus numquam! Nobis exercitationem aspernatur
+    obcaecati odio illo dicta earum debitis sunt vero incidunt numquam suscipit
+    assumenda dolores aut omnis dolorem eligendi, doloribus eos, maiores
+    voluptatem harum. Est cum ipsum corrupti sunt consequatur autem voluptas in
+    nemo mollitia vitae! Iure eius numquam nulla a, ducimus sed, molestiae dolor
+    provident in sapiente, consequuntur accusantium praesentium facilis
+    cupiditate veniam quo nobis earum voluptatum autem aspernatur reiciendis
+    similique qui aliquid dicta? Unde quasi molestiae facilis iure voluptatem
+    incidunt in sit quidem saepe tempore maiores doloribus, eius veritatis
+    aperiam iste, error sint officiis quod aliquid laboriosam nulla. Culpa quasi
+    autem distinctio iure delectus, nemo in libero! Voluptates vel iusto odit
+    dolore ullam tenetur iste ducimus labore magni architecto quam excepturi
+    alias sed, delectus rerum repellat reiciendis nihil necessitatibus id animi
+    ad nulla libero consequuntur ex! Sit explicabo dicta cum esse dolor deleniti
+    iusto illum adipisci animi amet voluptate laboriosam provident odio error
+    quos incidunt iste voluptatum, suscipit ad possimus dolore cumque! Unde,
+    incidunt dignissimos? Vel optio voluptatibus omnis fugiat unde, consectetur,
+    maxime qui minus exercitationem modi doloribus a, quod non ullam id atque
+    natus corrupti doloremque quas sunt error quo. Maxime nisi est velit
+    cupiditate magnam excepturi culpa quod voluptatum beatae quibusdam amet
+    libero neque totam nobis sapiente voluptate dolorem ducimus itaque,
+    inventore vitae eius vero pariatur quasi! Aliquid ab eum facilis beatae a
+    odit, ullam consequuntur delectus nemo, illo consectetur iusto deserunt
+    quidem labore vel dignissimos maiores magnam ipsa officiis totam quo rerum.
+    Aperiam, dolore at, reprehenderit reiciendis placeat corporis laudantium ut
+    nesciunt quis dolorum, beatae doloremque cum fugiat ipsam voluptate
+    consequatur suscipit. Consequuntur, quisquam ipsa, ad, distinctio explicabo
+    iste voluptatibus nisi odio laborum quidem adipisci excepturi neque
+    cupiditate. Cupiditate minus ipsum ullam enim placeat necessitatibus
+    corrupti nulla in. Quaerat accusamus asperiores exercitationem harum
+    consectetur delectus, fugit sunt, explicabo unde quas enim id ullam
+    laboriosam rerum cumque fugiat optio natus alias saepe repellat ipsum et
+    magnam reiciendis nostrum. Officia repudiandae consectetur saepe delectus
+    libero quo, perferendis dignissimos quia voluptatem praesentium optio iure
+    id blanditiis, ducimus odio totam dolorem exercitationem vero? Minus
+    accusantium eligendi ab, velit earum, sint voluptate, voluptatem natus
+    dolores impedit expedita. Dolores ut eum officia velit hic, optio quaerat et
+    veritatis maiores porro debitis ipsa magni minima ratione voluptates
+    accusantium quasi quibusdam quis pariatur consectetur id nemo ab cum
+    reprehenderit? Officiis dolore, velit at quas autem distinctio ratione alias
+    nemo quod voluptates voluptas consequatur? Assumenda voluptates ipsum
+    maiores praesentium iste velit vitae beatae tempora reprehenderit
+    consequuntur quasi ipsam, dignissimos hic veniam? Vero magni rerum porro
+    dignissimos commodi fuga ab, unde tempora adipisci facilis non, sed numquam
+    culpa cum saepe, quaerat quidem. Doloribus rem ducimus unde, doloremque
+    itaque in voluptatibus maxime cupiditate architecto veritatis quam quis
+    quidem et ut reiciendis eos laboriosam facere commodi. Magnam animi
+    excepturi, praesentium sunt dicta assumenda, alias velit saepe, ducimus quam
+    reprehenderit aspernatur quas vitae cum porro sequi voluptatibus. Magnam
+    libero error alias, vel magni dolor, odit, voluptatum tenetur minima ab
+    exercitationem perferendis sed iure cum eligendi expedita ut nam iste
+    molestias quia. Asperiores, ipsam, molestias excepturi quaerat facere
+    accusantium ab totam eaque nobis laudantium voluptatem nesciunt omnis
+    tempore vel adipisci est error natus sapiente! Maxime iusto quam aliquid
+    officiis tempora asperiores illo ratione ut quis similique ipsum, itaque
+    delectus optio consequuntur magnam, fugit fuga sunt eius aliquam inventore
+    nemo voluptatum odit repellendus! Corporis repellendus eum tempore repellat
+    aliquid, perferendis minus nesciunt tenetur sapiente fuga soluta, laudantium
+    doloribus neque magnam veritatis corrupti, ipsum dolores enim quam quae?
+    Consequuntur hic eligendi cum, ipsa quisquam itaque quae cupiditate. Rem
+    sint repudiandae accusamus fugiat maxime eveniet necessitatibus adipisci
+    sapiente voluptates quas quis ab consectetur, natus repellat aliquam velit
+    alias dolorum. Vitae quod odio dolorum necessitatibus sunt cumque recusandae
+    quos, accusantium et neque, vero perspiciatis asperiores natus velit
+    pariatur, nam nulla atque sequi eum ex laborum deserunt commodi excepturi.
+    Esse nulla at velit veniam inventore sequi accusamus nobis explicabo, quas
+    voluptatum dicta id dignissimos ipsum, doloremque in ut, cupiditate iste et?
+    Aperiam maiores fuga temporibus nesciunt voluptate. Enim aliquid tempora
+    fugit quam ipsum et ut blanditiis dolores distinctio, pariatur consectetur
+    facilis velit sunt perferendis aut quisquam. Eius sequi, maiores obcaecati
+    consectetur nisi dignissimos recusandae vero id, facere aut explicabo quia
+    nihil dicta error dolor minus provident perspiciatis reprehenderit saepe et
+    architecto soluta. Quibusdam, id aliquam asperiores ipsa vero sunt molestias
+    nobis nemo suscipit et consequatur neque dicta sint ut quod, quia eligendi
+    incidunt esse perferendis.
+    <script>
+      // let button=document.getElementById("btn");
+      //      button.addEventListener('click',function(){
+      //          document.getElementById("datarelated").innerHTML="hello yashwanth Good Morning"
+      //      })
+
+      //selectors,events(form,mouse,keyboard),hide/show,animate,fading,sliding,html,css,ajax
+      //selectors in jquery
+      //    $("p").hide();
+      //    $(".second").hide();
+      //$("*"),$("[href]") attribute related,$("a[target="-blank"]") for all the a tags which has the target attribute equal to the blank,$(":button") selects all input whose attribute type = button,$(),$()
+
+      //events
+      //mouse,keyboard,form ,document/window events
+      $(document).ready(function () {
+        //     $("#btn").click(function(){
+        //     $(".second").hide();
+        //    })
+
+        $(".main_content1").waypoint(
+          function () {
+            console.log("reached to top");
+            $(".main_content1").addClass(
+              "animate__animated animate__fadeInLeft"
+            );
+          },
+          { offset: "70%" }
+        );
+        $(".main_content2").waypoint(
+          function () {
+            $(".main_content2").addClass("animate__animated animate__fadeInUp");
+          },
+          { offset: "80%" }
+        );
+        $(".main_content3").waypoint(
+          function () {
+            $(".main_content3").addClass("animate__animated animate__zoomIn");
+          },
+          { offset: "90%" }
+        );
+
+        $("main-content4").waypoint(
+          function () {
+            $("main-conent4").addClass("animate__animated animate__zoomOut");
+          },
+          { offset: "40%" }
+        );
+
+        // main-content4{
+        //   opacity:0;
+
+        // }
+        // main-content4.animate__animated{
+        //   opacity:1;
+
+        // }
+        $("body").keyup(function (event) {
+          console.log(event.which);
+          if (event.which == 72) {
+            //hide,toogle(like on/off button)
+            $(".second").toggle(2000, function () {
+              console.log("task completed");
+            });
+          }
+          if (event.which == 83) {
+            $(".second").show();
+          }
+        });
+        //fade effects(fadeIn fadeOut fadeToggle fadeTo)
+        //fadeTo is to handle opacity 0 to 1
+        //slide effect is also for that we have to use slideToggle()
+        $("#btn").click(function () {
+          $(".second").fadeTo("slow", 0.5);
+        });
+        //animate method
+        // here we need to pass first thing like css property object as first argument and speed effect, callbacj function as third argument
+        $("#anime-btn").click(function () {
+          $(".anime").animate({
+            width: "+=400px",
+            height: "400px",
+            fontSize: "20px",
+          });
+        });
+
+        //manipulate dom elements
+        //.text()=to get/set text context, .html() html code,.val()
+        //$("btn_hide").attr("type") to get attribute type value
+        $("#dom-btn").click(function () {
+          // $("#domrelated").text("this content got changed as compared to the previous")
+          $("#domrelated").html(
+            "<b>this content got changed as compared to the previous</b>"
+          );
+        });
+        //modify css
+        //addClass(),removeClass(),toggleClass
+        //to change the color let color=$("div.box").css("background-color");
+        //$("#third").css("color",color)
+        //.css({"color":"red","background-color":"black"})
+
+        //form events
+        //focus,blur,change,submit
+        $("input").focus(function () {
+          $(this).css("background-color", "orange");
+        });
+        $("input").blur(function () {
+          $(this).css("background-color", "orange");
+        });
+        $("input").change(function () {
+          console.log(this.val());
+        });
+        $("#registration_form").submit(function (event) {
+          event.preventDefault();
+          console.log("form successfully submited");
+        });
+
+        //Ajax related
+        // loading the data in the background and displaying it on the webpage without reloading the whole page
+        //load()=> used to load data from server in the html element
+        //get()=>used to load data from the server using http get request
+        //post()=>used to send and load the data from the server using the post request
+        $("ajax").load("sample.txt", function (response, status, xhr) {
+          if (status == "success") {
+            alert("success");
+          }
+        });
+        //$.get("url",function with data and status arguments)
+
+        $.get("https://fakestoreapi.com/products", function (data, status) {
+          console.log(data, status);
+        });
+        $.post(
+          "https://fakestoreapi.com/products",
+          { title: "some content" },
+          function (data, status) {
+            console.log(data, status);
+          }
+        );
+
+        //animation :
+        //we have to import jquery library cdn link
+        //identify on which point this content will show -waypoints jquery plugin
+        //add animation for that content -animate.css library
+      });
+    </script>
+  </body>
+</html>

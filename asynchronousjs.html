@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body>
+    <!-- callback hell >promise chains >async await
+   synchronous - line by line asynchronous - it does not block the flow api related data  -->
+    <h1>jdhjhdfgkjh</h1>
+    <i class="fa-solid fa-check"></i>
+
+    <script>
+      /* */
+      console.log("hello1 ");
+      function sayHello() {
+        console.log("hello2 ");
+      }
+      setTimeout(sayHello, 5000); //sayHello is a callback function i.e a function that is passed as an argument to another function
+      console.log("hello3 ");
+      console.log("hello4 ");
+      //nested call back =callback hell =>difficult to manage and understand
+      function getData(dataId, getNextData) {
+        setTimeout(() => {
+          console.log("data", dataId);
+          getNextData;
+        }, 4000);
+      }
+      getData(1, () => {
+        getData(2, () => {
+          getData(3);
+        });
+      }); //call back hell
+      //to solve problem of call back hell we use promises(pending,fullfilled,rejected)
+      //promises -eventual completion of task it is an object in js
+      //let promise=new Promise((resolve,reject)=>{})
+      //pending,fullfilled ,rejected state
+      let promise = new Promise((resolve, reject) => {
+        console.log("i am a promise");
+      });
+      //.then() when promise fulfills and .catch()
+
+      function asyncFunction1() {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            console.log("some data1");
+            resolve("success");
+          }, 4000);
+        });
+      }
+      console.log("fetching data1");
+      let p1 = asyncFunction1();
+      p1.then((res) => {
+        console.log(res);
+        //another asyncFunc2 i.e promise chaining
+      });
+      //iife ()
+      //aync await
+      //async makes a function to return a promise
+      //await makes a function to wait for a promise
+      //async returns promise await - it pauses execution of its surrounding until promise is settled
+      function api() {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            console.log("weather data");
+            resolve(200);
+          }, 2000);
+        });
+      }
+      async function getWeatherData() {
+        await api();
+        await api();
+      }
+    </script>
+  </body>
+</html>

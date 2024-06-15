@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <style>
+      #a {
+        background-color: #f5f5f5;
+        padding: 30px;
+        width: 350px;
+        height: 420px;
+        margin-top: 20px;
+        border-radius: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+    <center>
+      <div id="a">
+        <h2>Updation Page</h2>
+        <br />
+        <form id="updateForm">
+          <input
+            type="text"
+            id="username"
+            name="name"
+            class="form-control"
+            placeholder="UserName"
+            required
+          /><br />
+
+          <input
+            type="text"
+            id="email"
+            name="email"
+            class="form-control col-md-12"
+            placeholder="Email"
+            required
+          /><br />
+
+          <input
+            type="password"
+            id="password"
+            name="password"
+            class="form-control"
+            placeholder="Password"
+            required
+          /><br />
+          <input
+            type="text"
+            id="phNumber"
+            name="phNumber"
+            class="form-control col-md-12"
+            placeholder="Phone Number"
+            required
+          /><br />
+          <button
+            type="submit"
+            class="btn btn-success"
+            style="color: white; text-decoration: none"
+          >
+            Update</button
+          >&nbsp;&nbsp;&nbsp;
+        </form>
+      </div>
+    </center>
+
+    <script>
+      $(document).ready(function () {
+        $("#updateForm").submit(function (event) {
+          event.preventDefault();
+
+          var phNumber = $("#phNumber").val();
+          var newData = {
+            name: $("#username").val(),
+            email: $("#email").val(),
+            password: $("#password").val(),
+          };
+
+          $.ajax({
+            url: "http://localhost:8080/updateUser/" + phNumber,
+            type: "PUT",
+            contentType: "application/json",
+            data: JSON.stringify(newData),
+            success: function (data) {
+              // Handle successful update
+              console.log("Item updated:", data);
+              // Update UI or display success message
+            },
+            error: function (xhr, textStatus, errorThrown) {
+              // Handle error
+              console.error("Error updating item:", errorThrown);
+              // Display error message or handle error appropriately
+            },
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
+
+/* $.ajax{ url:jajslk, method:request, contentType, data, success, error } */ /*
+$(document).ready(function(){ $("#updateForm").submit(function(event){
+event.preventDefault(); let phNumber=$("#phNumber").val(); let newData1={
+name:$("#username").val(), email:$("#email").val() }; $.ajax({
+url:"http:localhost:8080/updateUser/"+phNumber, method:"PUT",
+contentType:"application/json", data:json.stringify(newData1),
+success:function(response){ console.log("updated data successfully :"+response)
+}, error:function(error){ console.log("some thing went wrong :"+error) } }) })
+}) */

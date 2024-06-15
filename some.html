@@ -1,0 +1,42 @@
+<!--
+{
+  "page": 1,
+  "limit": 10,
+  "total": 2,
+  "books": [
+    {"id": 1, "title": "Pride and Prejudice"},
+    {"id": 4, "title": "The Great Gatsby"}
+  ]
+}
+In the above example data, a Collection should populate using the "books" array rather than the root object structure. This difference is easily reconciled using a parse method that returns (or transforms) the desired portion of API data:
+
+var Books = Backbone.Collection.extend({
+  url: '/books',
+  parse: function(data) {
+    return data.books;
+  }
+});
+
+ajaxBackbone.ajax = function(request) { ... };
+If you want to use a custom AJAX function, or your endpoint doesn't support the jQuery.ajax API and you need to tweak things, you can do so by setting Backbone.ajax.
+
+//how to use events in backbone js
+var TodoList = Backbone.Collection.extend({
+    model: Todo,
+
+    initialize: function() {
+        this.on('add', function(model) {
+            console.log('Added: ' + model.get('title'));
+        });
+
+        this.on('remove', function(model) {
+            console.log('Removed: ' + model.get('title'));
+        });
+    }
+});
+
+var myTodoList = new TodoList();
+myTodoList.add(new Todo({title: 'Learn Backbone.js'})); // This will log: "Added: Learn Backbone.js"
+myTodoList.remove(myTodoList.at(0)); // This will log: "Removed: Learn Backbone.js"
+
+-->
