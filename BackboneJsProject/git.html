@@ -44,6 +44,113 @@ Initialized empty Git repository in C:/Users/seven/Desktop/git/.git/(.git file w
 -if he says ok we can merge it to project
 -git checkout (inorder to jump between the branches)
 -to create new branch use -b like git [checkout -b] "copy1"
+-inorder to make staging area file into the working directory area then we wil use git [restore --staged <file>...]" to unstage)
+-
+C:\Users\seven\Desktop\git>git push
+fatal: The current branch copy1 has no upstream branch.
+To push the current branch and set the remote as upstream, use
+
+    git push --set-upstream origin copy1
+
+To have this happen automatically for branches without a tracking
+upstream, see 'push.autoSetupRemote' in 'git help config'.
+
+
+C:\Users\seven\Desktop\git>  git push --set-upstream origin copy1
+Enumerating objects: 3, done.
+Counting objects: 100% (3/3), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (2/2), 260 bytes | 260.00 KiB/s, done.
+Total 2 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)
+remote:
+remote: Create a pull request for 'copy1' on GitHub by visiting:
+remote:      https://github.com/SalkutiYashwanth6962/gitdemo/pull/new/copy1
+remote:
+To https://github.com/SalkutiYashwanth6962/gitdemo.git
+ * [new branch]      copy1 -> copy1
+branch 'copy1' set up to track 'origin/copy1'.
+
+C:\Users\seven\Desktop\git>
+
+-usually the copy1 branch is the copy of the master branch
+-we will be having compare and pull request=>merge pull request
+-in github we have to perform the pull and merge operations
+-a fork is a copy of a repository .forking a repository allows you to freely experiment with changes without affecting the original project
+-code >HTTPS> copy link
+-to get project from the remote server github then create a local project 
+-git clone urllink
+-issues - we can raise also we can contribute with other issues
+-git fetch- to bring changes 
+-git pull - to make all changes to master branch whatever present in remote in our file
+
+-git checkout dev2
+-git merge origin/master 
+-add>commit>push
+
+PS D:\Html> git init 
+Initialized empty Git repository in D:/Html/.git/
+PS D:\Html> git add .
+PS D:\Html> git commit -m"this is my first commit"
+[master (root-commit) 59dec07] this is my first commit
+ 39 files changed, 4583 insertions(+)
+ create mode 100644 BackboneJs/app.js
+ create mode 100644 BackboneJs/app2.js
+ create mode 100644 BackboneJs/backbonejs1.html
+ create mode 100644 BackboneJs/fetchbackone.html
+ create mode 100644 BackboneJs/update2.html
+ create mode 100644 BackboneJsProject/Backbonejsroutingex.html
+ create mode 100644 BackboneJsProject/git.html
+ create mode 100644 BackboneJsProject/route.js
+ create mode 100644 CustomEvent3.js
+ create mode 100644 DropdownTask.html
+ create mode 100644 EventHandlers4.js
+ create mode 100644 HomePage.html
+ create mode 100644 HtmlPractice.html
+ create mode 100644 ajaxconcepts.html
+ create mode 100644 asynchronousjs.html
+ create mode 100644 backbonejs.html
+ create mode 100644 collection.js
+ create mode 100644 cssconcepts.html
+ create mode 100644 eventHandling.js
+ create mode 100644 events.html
+ create mode 100644 fetchapitask.html
+ create mode 100644 gridstyle.css
+ create mode 100644 jsconcepts.html
+ create mode 100644 model.js
+ create mode 100644 modelInheritance.js
+ create mode 100644 modelValidation.js
+ create mode 100644 modeldataChangingEventModel.js
+ create mode 100644 modeloperations.js
+ create mode 100644 parameterizedrouting.js
+ create mode 100644 passingData2.js
+ create mode 100644 regularexp.html
+ create mode 100644 router.js
+ create mode 100644 routerEx2.js
+ create mode 100644 sample.txt
+ create mode 100644 script1.js
+ create mode 100644 some.html
+ create mode 100644 template5.js
+ create mode 100644 update.html
+ create mode 100644 view1.js
+PS D:\Html> git branch
+* master
+PS D:\Html> git branch -M main
+PS D:\Html> git remote add origin https://github.com/SalkutiYashwanth6962/ProjectFiles.git
+PS D:\Html> git push -u origin main
+Enumerating objects: 43, done.
+Counting objects: 100% (43/43), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (42/42), done.
+Writing objects: 100% (43/43), 50.96 KiB | 1.08 MiB/s, done.
+Total 43 (delta 1), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (1/1), done.
+To https://github.com/SalkutiYashwanth6962/ProjectFiles.git
+ * [new branch]      main -> main
+branch 'main' set up to track 'origin/main'.
+PS D:\Html> 
+
+
 
 
 
