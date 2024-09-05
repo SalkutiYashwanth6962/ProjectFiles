@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PDF to Images</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+      }
+      .imageWrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 30px;
+        position: relative;
+      }
+      .imageWrapper img {
+        border: 1px solid black;
+        border-radius: 4px;
+        padding: 5px;
+        background-color: #f9f9f9;
+        cursor: default; /* Default cursor */
+      }
+      .buttonsWrapper {
+        margin-left: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <form id="pdfForm" style="margin-top: 50px">
+      <label for="Id">Enter the Id:</label>
+      <input type="text" name="Id" id="Id" />
+      <input type="submit" value="Get Images" />
+    </form>
+
+    <div id="responseMessage"></div>
+    <div id="imageContainer"></div>
+
+    <script>
+      $(document).ready(function () {
+        // Store the coordinates for each image
+        var coordinatesMap = {};
+
+        $("#pdfForm").submit(function (event) {
+          event.preventDefault(); // Prevent the form from submitting the normal way
+
+          $.ajax({
+            url: "http://localhost:8090/convertPdf1",
+            type: "POST",
+            data: { Id: $("#Id").val() },
+            success: function (response) {
+              // Clear previous content
+              $("#responseMessage").empty();
+              $("#imageContainer").empty();
+
+              // Show the message
+              $("#responseMessage").text(response.message);
+
+              // Display the images
+              if (
+                response.imageBase64List &&
+                response.imageBase64List.length > 0
+              ) {
+                response.imageBase64List.forEach(function (base64Image, index) {
+                  $("#imageContainer").append(
+                    '<div class="imageWrapper">' +
+                      '<img id="image' +
+                      index +
+                      '" style="height:700px; width:500px;" src="' +
+                      base64Image +
+                      '" alt="PDF page image"/>' +
+                      '<div class="buttonsWrapper">' +
+                      '<button class="editBtn" data-index="' +
+                      index +
+                      '">Edit</button>' +
+                      '<button class="updateBtn" data-index="' +
+                      index +
+                      '">Update</button>' +
+                      "</div>" +
+                      "</div>"
+                  );
+                });
+
+                // Edit button logic
+                $(".editBtn").on("click", function () {
+                  var index = $(this).data("index");
+                  var imageElement = $("#image" + index);
+
+                  // Set cursor to crosshair for the clicked image
+                  imageElement.css("cursor", "crosshair");
+
+                  imageElement.on("click", function (event) {
+                    var clickX = event.pageX - $(this).offset().left;
+                    var clickY = event.pageY - $(this).offset().top;
+
+                    var imageWidth = $(this).width();
+                    var imageHeight = $(this).height();
+                    var pdfWidth = 585;
+                    var pdfHeight = 832;
+                    // var pdfWidth = response.widths[index];
+                    // var pdfHeight = response.heights[index];
+
+                    // var pdfWidth = response.width; // example width of the PDF page in points (8.5x11 inches at 72 DPI)
+                    // var pdfHeight = response.height; // example height of the PDF page in points
+
+                    // Convert to PDF coordinates
+                    var actualX = (clickX / imageWidth) * pdfWidth;
+                    var actualY =
+                      pdfHeight - (clickY / imageHeight) * pdfHeight; // Y-axis is inverted in PDFs
+
+                    console.log(
+                      "PDF Coordinates: X = " + actualX + ", Y = " + actualY
+                    );
+
+                    // Store the coordinates in the map
+                    coordinatesMap[index] = { x: actualX, y: actualY };
+
+                    // Optional: Disable the click event listener after getting the coordinates
+                    imageElement.off("click");
+
+                    // Reset cursor to default after editing
+                    imageElement.css("cursor", "default");
+                  });
+                });
+
+                // Update button logic
+                $(".updateBtn").on("click", function () {
+                  var index = $(this).data("index");
+
+                  // Check if coordinates are available for this image
+                  if (coordinatesMap[index]) {
+                    var coords = coordinatesMap[index];
+
+                    // Send coordinates to server to update the image on the PDF
+                    $.ajax({
+                      url: "http://localhost:8090/placeImageOnPdf",
+                      type: "POST",
+                      data: {
+                        pdfId: $("#Id").val(),
+                        x: coords.x,
+                        y: coords.y,
+                        page: index, // or any relevant page number
+                      },
+                      success: function (response) {
+                        console.log("Image updated successfully on the PDF.");
+                      },
+                      error: function (xhr, status, error) {
+                        console.log("Error updating image on PDF: " + error);
+                      },
+                    });
+                  } else {
+                    alert("Please select a position by clicking 'Edit' first.");
+                  }
+                });
+              }
+            },
+            error: function (xhr, status, error) {
+              console.log("Error: " + error);
+            },
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PDF to Images</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+      }
+      .imageWrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 30px;
+        position: relative;
+      }
+      .imageWrapper img {
+        border: 1px solid black;
+        border-radius: 4px;
+        padding: 5px;
+        background-color: #f9f9f9;
+        cursor: default; /* Default cursor */
+      }
+      .buttonsWrapper {
+        margin-left: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <form id="pdfForm" style="margin-top: 50px">
+      <label for="Id">Enter the Id:</label>
+      <input type="text" name="Id" id="Id" />
+      <input type="submit" value="Get Images" />
+    </form>
+
+    <div id="responseMessage"></div>
+    <div id="imageContainer"></div>
+
+    <script>
+      $(document).ready(function () {
+        $("#pdfForm").submit(function (event) {
+          event.preventDefault(); // Prevent the form from submitting the normal way
+
+          $.ajax({
+            url: "http://localhost:8090/convertPdf1",
+            type: "POST",
+            data: { Id: $("#Id").val() },
+            success: function (response) {
+              // Clear previous content
+              $("#responseMessage").empty();
+              $("#imageContainer").empty();
+
+              // Show the message
+              $("#responseMessage").text(response.message);
+
+              // Display the images
+              if (
+                response.imageBase64List &&
+                response.imageBase64List.length > 0
+              ) {
+                response.imageBase64List.forEach(function (base64Image, index) {
+                  $("#imageContainer").append(
+                    '<div class="imageWrapper">' +
+                      '<img id="image' +
+                      index +
+                      '" style="height:700px; width:500px;" src="' +
+                      base64Image +
+                      '" alt="PDF page image"/>' +
+                      '<div class="buttonsWrapper">' +
+                      '<button class="editBtn" data-index="' +
+                      index +
+                      '">Edit</button>' +
+                      '<button class="updateBtn" data-index="' +
+                      index +
+                      '">Update</button>' +
+                      "</div>" +
+                      "</div>"
+                  );
+                });
+                $(".editBtn").on("click", function () {
+                  var index = $(this).data("index");
+                  var imageElement = $("#image" + index);
+
+                  // Set cursor to crosshair for the clicked image
+                  imageElement.css("cursor", "crosshair");
+
+                  imageElement.on("click", function (event) {
+                    var clickX = event.pageX - $(this).offset().left;
+                    var clickY = event.pageY - $(this).offset().top;
+
+                    var imageWidth = $(this).width();
+                    var imageHeight = $(this).height();
+
+                    var pdfWidth = 595; // example width of the PDF page in points (8.5x11 inches at 72 DPI)
+                    var pdfHeight = 842; // example height of the PDF page in points
+
+                    // Convert to PDF coordinates
+                    var actualX = (clickX / imageWidth) * pdfWidth;
+                    var actualY =
+                      pdfHeight - (clickY / imageHeight) * pdfHeight; // Y-axis is inverted in PDFs
+
+                    console.log(
+                      "PDF Coordinates: X = " + actualX + ", Y = " + actualY
+                    );
+
+                    // Optional: Disable the click event listener after getting the coordinates
+                    imageElement.off("click");
+
+                    // Reset cursor to default after editing
+                    imageElement.css("cursor", "default");
+
+                    // Send coordinates to server to place the image on the PDF
+                    $.ajax({
+                      url: "http://localhost:8090/placeImageOnPdf",
+                      type: "POST",
+                      data: {
+                        pdfId: $("#Id").val(),
+                        x: actualX,
+                        y: actualY,
+                        page: index, // or any relevant page number
+                      },
+                      success: function (response) {
+                        console.log("Image placed successfully on the PDF.");
+                      },
+                      error: function (xhr, status, error) {
+                        console.log("Error placing image on PDF: " + error);
+                      },
+                    });
+                  });
+                });
+              }
+            },
+            error: function (xhr, status, error) {
+              console.log("Error: " + error);
+            },
+          });
+        });
+      });
+    </script>
+  </body>
+</html> -->

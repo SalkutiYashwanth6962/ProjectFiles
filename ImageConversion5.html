@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Convert PDF to Images</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      #imageContainer {
+        padding-top: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      img {
+        width: 600px;
+        border: 1px solid black;
+        margin-bottom: 15px;
+        cursor: default;
+      }
+      .image-item {
+        position: relative;
+      }
+      .edit-button,
+      .update-button,
+      .add-logo-button,
+      .edit-text-button,
+      .update-text-button,
+      .add-text-button {
+        font-size: 14px;
+        padding: 4px 12px;
+        position: absolute;
+        top: 10px;
+        cursor: pointer;
+      }
+      .edit-button {
+        top: 315px;
+        width: 100px;
+        margin-left: 5px;
+      }
+      .update-button {
+        top: 350px;
+        width: 100px;
+        margin-left: 5px;
+      }
+      .add-logo-button {
+        top: 385px;
+        width: 100px;
+        margin-left: 5px;
+      }
+      .edit-text-button {
+        top: 435px;
+        width: 100px;
+        margin-left: 5px;
+      }
+      .update-text-button {
+        top: 470px;
+        width: 100px;
+        margin-left: 5px;
+      }
+      .add-text-button {
+        top: 505px;
+        width: 100px;
+        margin-left: 5px;
+      }
+      .text-box {
+        position: absolute;
+        border: 1px solid #333;
+        padding: 5px;
+        font-size: 14px;
+        background: none;
+      }
+      textarea:focus,
+      input:focus {
+        outline: none;
+      }
+    </style>
+  </head>
+  <body>
+    <br />
+
+    <center>
+      <form id="pdfForm">
+        <input
+          type="text"
+          id="pdfId"
+          name="pdfId"
+          placeholder="Enter the id:"
+          required
+          style="
+            width: 15%;
+            padding: 5px 8px;
+            font-size: 14px;
+            border: 1px solid #333;
+            outline: none;
+          "
+        />
+        <button
+          type="submit"
+          style="padding: 5px 15px; font-size: 14px; cursor: pointer"
+        >
+          Get Images
+        </button>
+      </form>
+    </center>
+
+    <div id="imageContainer"></div>
+
+    <script>
+      let editingImageId = null;
+      let pageNumber = null;
+      let isEditingText = false;
+
+      $(document).ready(function () {
+        $("#pdfForm").submit(function (event) {
+          event.preventDefault();
+          $("#imageContainer").empty();
+          let pdfId = $("#pdfId").val();
+
+          $.ajax({
+            type: "GET",
+            url: `http://localhost:8090/convertPdfToImages`,
+            data: { pdfId: $("#pdfId").val() },
+            success: function (response) {
+              console.log(response);
+
+              $("#imageContainer").empty();
+              response.forEach(function (ImageJDO) {
+                console.log(ImageJDO.objectName);
+                $("#imageContainer").append(
+                  `<div class="image-item" data-pngjdo-id="${ImageJDO.id}">
+                                        <img src="http://localhost:8090/imageServing1/${ImageJDO.objectName}" alt="Converted Image" id="${ImageJDO.id}" />
+                                        <button class="edit-button" data-image-id="${ImageJDO.id}" data-page="${ImageJDO.pdfPageNo}">Edit </button>
+                                        <button class="update-button" data-image-id="${ImageJDO.id}">Update </button>
+                                        <button class="add-logo-button" data-image-id="${ImageJDO.id}" data-pdf-id="${ImageJDO.pdfId}">Update Logo</button>
+                                         <button class="edit-text-button" data-image-id="${ImageJDO.id}" data-page="${ImageJDO.pdfPageNo}">Edit text </button>
+                                          <button class="update-text-button" data-image-id="${ImageJDO.id}">Update text</button>
+                                          <button class="add-text-button" data-image-id="${ImageJDO.id}" data-pdf-id="${ImageJDO.pdfId}">Add Text</button>
+                                    </div>`
+                );
+                if (
+                  ImageJDO &&
+                  ImageJDO.imagePositions &&
+                  ImageJDO.imagePositions.length
+                ) {
+                  ImageJDO.imagePositions.forEach(function (imagePosition) {
+                    $("#" + ImageJDO.id).on("load", function () {
+                      //
+                      let width = imagePosition.width;
+                      let height = imagePosition.height;
+                      //f
+                      let originalWidth = $(this).width();
+                      let originalHeight = $(this).height();
+
+                      let xScale = originalWidth / width;
+                      let yScale = originalHeight / height;
+
+                      let newX = imagePosition.x * xScale;
+                      let newY = imagePosition.y * yScale;
+
+                      let boxWidth = imagePosition.boxWidth;
+                      let boxHeight = imagePosition.boxHeight;
+
+                      let boxLeft = newX - 50;
+                      let boxTop = newY - boxHeight / 2;
+
+                      let $box = $("<div></div>")
+                        .css({
+                          position: "absolute",
+                          left: boxLeft + "px",
+                          top: boxTop + "px",
+                          width: boxWidth + "px",
+                          height: boxHeight + "px",
+                          border: "2px solid green",
+                        })
+                        .appendTo($(this).parent());
+                      // appendBoxes($("#" + ImageJDO.id), newX, newY);
+                    });
+                  });
+                }
+                if (
+                  ImageJDO &&
+                  ImageJDO.textBoxPositions &&
+                  ImageJDO.textBoxPositions.length
+                ) {
+                  ImageJDO.textBoxPositions.forEach(function (textPosition) {
+                    $("#" + ImageJDO.id).on("load", function () {
+                      let width = textPosition.width;
+                      let height = textPosition.height;
+
+                      let originalWidth = $(this).width();
+                      let originalHeight = $(this).height();
+
+                      let xScale = originalWidth / width;
+                      let yScale = originalHeight / height;
+
+                      let newX = textPosition.x * xScale;
+                      let newY = textPosition.y * yScale;
+
+                      appendTextBoxes($("#" + ImageJDO.id), newX, newY);
+                      // appendTextBoxes($("#" + ImageJDO.id), newX, newY);
+                    });
+                  });
+                }
+              });
+            },
+            error: function (xhr, status, error) {
+              console.log("Error: " + error);
+            },
+          });
+        });
+
+        let boxes = [];
+        let textBoxes = [];
+
+        $("#imageContainer").on("click", "img", function (e) {
+          e.preventDefault();
+          if (editingImageId == $(this).attr("id")) {
+            let offsetX = e.offsetX;
+            let offsetY = e.offsetY;
+            var _this = this;
+            if (isEditingText) {
+              appendTextBoxes(_this, offsetX, offsetY);
+              textBoxes.push({
+                x: offsetX,
+                y: offsetY,
+                width: $(_this).width(),
+                height: $(_this).height(),
+                text: "",
+              });
+            } else {
+              let $box = appendBoxes(_this, offsetX, offsetY);
+              let boxWidth = $box.width();
+              let boxHeight = $box.height();
+
+              boxes.push({
+                x: offsetX,
+                y: offsetY,
+                width: $(_this).width(),
+                height: $(_this).height(),
+                boxWidth: boxWidth,
+                boxHeight: boxHeight,
+              });
+            }
+
+            console.log($(_this).width());
+            console.log($(_this).height());
+          }
+        });
+
+        function appendBoxes(_this, offsetX, offsetY) {
+          let boxWidth = 100;
+          let boxHeight = 40;
+
+          let boxLeft = offsetX - 50;
+          let boxTop = offsetY - 20;
+
+          let $box = $("<div></div>")
+            .css({
+              position: "absolute",
+              left: boxLeft + "px",
+              top: boxTop + "px",
+              width: boxWidth + "px",
+              height: boxHeight + "px",
+              border: "2px solid green",
+              resize: "both",
+              overflow: "auto",
+            })
+            .appendTo($(_this).parent());
+          // Event listener for when resizing is done
+          $box.on("mouseup", function () {
+            let newWidth = $box.width();
+            let newHeight = $box.height();
+
+            // Update the box dimensions in the boxes array
+            let boxIndex = boxes.length - 1;
+            boxes[boxIndex].boxWidth = newWidth;
+            boxes[boxIndex].boxHeight = newHeight;
+
+            console.log("New Width: " + newWidth + "px");
+            console.log("New Height: " + newHeight + "px");
+          });
+          return $box;
+        }
+
+        function appendTextBoxes(_this, offsetX, offsetY) {
+          let boxWidth = 170;
+          let boxHeight = 20;
+
+          let boxLeft = offsetX - 85;
+          let boxTop = offsetY - 10;
+
+          let $Textbox = $(
+            "<div><input style='border:none' type='text' class='text-box'/></div>"
+          )
+            .css({
+              position: "absolute",
+              left: boxLeft + "px",
+              top: boxTop + "px",
+              width: boxWidth + "px",
+              height: boxHeight + "px",
+              border: "2px solid green",
+            })
+            // .appendTo($image.parent());
+            .appendTo($(_this).parent());
+
+          $Textbox.find("input").on("input", function () {
+            let currentText = $(this).val();
+
+            // Update the last added textBox entry with the current text
+            textBoxes[textBoxes.length - 1].text = currentText;
+          });
+        }
+
+        $("#imageContainer").on("click", ".update-button", function () {
+          let currentButton = $(this);
+          let pngJDOId = $(this).closest(".image-item").attr("data-pngjdo-id");
+
+          $.ajax({
+            type: "POST",
+            url: `http://localhost:8090/saveImagePositions`,
+            data: {
+              pngJDOId: pngJDOId,
+              boxes: JSON.stringify(boxes),
+            },
+            success: function (response) {
+              alert(" updated boxes ..");
+              boxes = [];
+            },
+            error: function (xhr, status, error) {
+              console.log("Error: " + error);
+              console.log("Status: " + status);
+              console.dir(xhr);
+            },
+          });
+        });
+        $("#imageContainer").on("click", ".update-text-button", function () {
+          let currentButton = $(this);
+          let pngJDOId = $(this).closest(".image-item").attr("data-pngjdo-id");
+
+          $.ajax({
+            type: "POST",
+            url: `http://localhost:8090/saveTextBoxPositions`,
+            data: {
+              pngJDOId: pngJDOId,
+              textBoxes: JSON.stringify(textBoxes),
+            },
+            success: function (response) {
+              alert("text updated successfully..");
+              textBoxes = [];
+            },
+            error: function (xhr, status, error) {
+              console.log("Error: " + error);
+              console.log("Status: " + status);
+              console.dir(xhr);
+            },
+          });
+        });
+
+        $("#imageContainer").on("click", ".add-logo-button", function () {
+          let currentButton = $(this);
+          let pngId = $(this).closest(".image-item").attr("data-pngjdo-id");
+
+          editingImageId = currentButton.data("image-id");
+
+          if (editingImageId) {
+            $.ajax({
+              type: "POST",
+              url: `http://localhost:8090/updateLogo`,
+              contentType: "application/x-www-form-urlencoded",
+              data: { pngId: pngId },
+              success: function (response) {
+                alert("Logo added");
+              },
+              error: function (xhr, status, error) {
+                alert("Failed to add logo ..");
+                console.log("Error: " + error);
+              },
+            });
+          }
+        });
+        $("#imageContainer").on("click", ".add-text-button", function (e) {
+          e.preventDefault();
+          let currentButton = $(this);
+          let pngId = $(this).closest(".image-item").attr("data-pngjdo-id");
+
+          editingImageId = currentButton.data("image-id");
+
+          if (editingImageId) {
+            $.ajax({
+              type: "POST",
+              url: `http://localhost:8090/addText`,
+              contentType: "application/x-www-form-urlencoded",
+              data: { pngId: pngId },
+              success: function (response) {
+                alert("Text added");
+              },
+              error: function (xhr, status, error) {
+                alert("Failed to add logo ..");
+                console.log("Error: " + error);
+              },
+            });
+          }
+        });
+
+        $("#imageContainer").on("click", ".update-button", function () {
+          editingImageId = null;
+          let currentButton = $(this)
+            .closest(".image-item")
+            .find(".edit-button");
+          let currentImage = $(this).closest(".image-item").find("img");
+          // clearInterval(currentButton.data("intervalId"));
+          currentImage.css("cursor", "default");
+        });
+
+        // Handle the 'Edit' button click
+        $("#imageContainer").on("click", ".edit-button", function () {
+          isEditingText = false;
+
+          $(".edit-button").html("Edit");
+          let currentButton = $(this);
+          $("img").css("cursor", "default");
+          editingImageId = currentButton.data("image-id");
+          pageNumber = currentButton.data("page");
+          let currentImage = $("#" + editingImageId);
+          if (editingImageId && pageNumber) {
+            currentImage.css("cursor", "crosshair");
+          }
+        });
+
+        // Handle the 'Edit Text' button click
+        $("#imageContainer").on("click", ".edit-text-button", function () {
+          isEditingText = true;
+
+          $(".edit-text-button").html("Edit text");
+          let currentButton = $(this);
+          $("img").css("cursor", "default");
+          editingImageId = currentButton.data("image-id");
+          pageNumber = currentButton.data("page");
+
+          let currentImage = $("#" + editingImageId);
+          if (editingImageId && pageNumber) {
+            currentButton.css("margin-right", "10px");
+            currentImage.css("cursor", "crosshair");
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
+
+<!--
+, $(this) represents the current element in the context where the code is being executed
+
+// $("#imageContainer").on("click", "img", function (e) {
+  //   if (isEditingText && editingImageId == $(this).attr("id")) {
+  //     let offsetX = e.offsetX;
+  //     let offsetY = e.offsetY;
+
+  //     let boxLeft = offsetX - 50;
+  //     let boxTop = offsetY - 20;
+  //     var _this = this;
+  //     if (isEditingText) {
+  //       appendTextBoxes(_this, offsetX, offsetY);
+  //     }
+  //     // let $textBox = $("<input type='text' class='text-box' />")
+  //     //   .css({
+  //     //     left: boxLeft + "px",
+  //     //     top: boxTop + "px",
+  //     //   })
+  //     //   .appendTo($(this).parent())
+  //     //   .focus();
+
+  //     $textBox.on("blur", function () {
+  //       // Capture the text box value and send it to the backend
+  //       let textValue = $(this).val();
+
+  //       $.ajax({
+  //         type: "POST",
+  //         url: `http://localhost:8090/saveText`,
+  //         data: {
+  //           text: textValue,
+  //           pageNumber: pageNumber,
+  //           x: offsetX,
+  //           y: offsetY,
+  //         },
+  //         success: function (response) {
+  //           console.log("Text saved successfully");
+  //         },
+  //         error: function (xhr, status, error) {
+  //           console.log("Error: " + error);
+  //           console.log("Status: " + status);
+  //           console.dir(xhr);
+  //         },
+  //       });
+
+  //       $(this).remove();
+  //       isEditingText = false;
+  //       $("img").css("cursor", "default");
+  //     });
+  //   }
+  // });
+  -->

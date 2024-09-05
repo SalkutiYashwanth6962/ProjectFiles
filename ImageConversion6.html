@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Convert PDF to Images</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      #imageContainer {
+        padding-top: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      img {
+        width: 600px;
+        border: 1px solid black;
+        margin-bottom: 15px;
+        cursor: default;
+      }
+      .image-item {
+        position: relative;
+      }
+      .edit-button,
+      .update-button,
+      .add-logo-button,
+      .edit-text-button {
+        font-size: 14px;
+        padding: 4px 12px;
+        position: absolute;
+        top: 10px;
+        cursor: pointer;
+      }
+      .edit-button {
+        top: 315px;
+        width: 100px;
+        margin-left: 5px;
+      }
+      .update-button {
+        top: 350px;
+        width: 100px;
+        margin-left: 5px;
+      }
+      .add-logo-button {
+        top: 385px;
+        width: 100px;
+        margin-left: 5px;
+      }
+      .edit-text-button {
+        top: 435px;
+        width: 100px;
+        margin-left: 5px;
+      }
+      .text-box {
+        position: absolute;
+        border: 1px solid #333;
+        padding: 5px;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <br />
+
+    <center>
+      <form id="pdfForm">
+        <input
+          type="text"
+          id="pdfId"
+          name="pdfId"
+          placeholder="Enter the id:"
+          required
+          style="
+            width: 13%;
+            padding: 5px 8px;
+            font-size: 14px;
+            border: 1px solid #333;
+            outline: none;
+          "
+        />
+        <button
+          type="submit"
+          style="padding: 5px 15px; font-size: 14px; cursor: pointer"
+        >
+          Get Images
+        </button>
+      </form>
+    </center>
+
+    <div id="imageContainer"></div>
+
+    <script>
+      let editingImageId = null;
+      let pageNumber = null;
+      let isEditingText = false;
+
+      $(document).ready(function () {
+        $("#pdfForm").submit(function (event) {
+          event.preventDefault();
+          $("#imageContainer").empty();
+          let pdfId = $("#pdfId").val();
+
+          $.ajax({
+            type: "GET",
+            url: `http://localhost:8090/convertPdfToImages`,
+            data: { pdfId: pdfId },
+            success: function (response) {
+              $("#imageContainer").empty();
+              response.forEach(function (ImageJDO, index) {
+                $("#imageContainer").append(
+                  `<div class="image-item" data-pngjdo-id="${ImageJDO.id}">
+                                        <img src="http://localhost:8090/imageServing1/${ImageJDO.objectName}" alt="Converted Image" id="${ImageJDO.id}" />
+                                        <button class="edit-button" data-image-id="${ImageJDO.id}" data-page="${ImageJDO.pdfPageNo}">Edit </button>
+                                        <button class="update-button" data-image-id="${ImageJDO.id}">Update </button>
+                                        <button class="add-logo-button" data-image-id="${ImageJDO.id}" data-pdf-id="${ImageJDO.pdfId}">Update Logo</button>
+                                         <button class="edit-text-button" data-image-id="${ImageJDO.id}" data-page="${ImageJDO.pdfPageNo}">Edit text </button>
+                                    </div>`
+                );
+              });
+            },
+            error: function (xhr, status, error) {
+              console.log("Error: " + error);
+              console.log("Status: " + status);
+              console.dir(xhr);
+            },
+          });
+        });
+
+        // Handle the 'Edit Text' button click
+        $("#imageContainer").on("click", ".edit-text-button", function () {
+          isEditingText = true;
+          editingImageId = $(this).data("image-id");
+          pageNumber = $(this).data("page");
+
+          let currentImage = $("#" + editingImageId);
+          currentImage.css("cursor", "crosshair");
+        });
+
+        // Handle image click for text placement
+        $("#imageContainer").on("click", "img", function (e) {
+          if (isEditingText && editingImageId == $(this).attr("id")) {
+            let offsetX = e.offsetX;
+            let offsetY = e.offsetY;
+            let imageContainerDiv = $(this).closest(".image-item");
+
+            // Append the text box at the clicked position
+            let textBox = $("<input>")
+              .attr("type", "text")
+              .addClass("text-box")
+              .css({
+                left: offsetX + "px",
+                top: offsetY + "px",
+              })
+              .appendTo(imageContainerDiv);
+
+            isEditingText = false; // Stop editing after placing the text box
+            $(this).css("cursor", "default");
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
